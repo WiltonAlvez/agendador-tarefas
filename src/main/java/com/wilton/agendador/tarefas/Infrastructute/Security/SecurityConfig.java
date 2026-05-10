@@ -3,16 +3,10 @@ package com.wilton.agendador.tarefas.Infrastructute.Security;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;
-    import org.springframework.http.HttpMethod;
-    import org.springframework.security.authentication.AuthenticationManager;
-    import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
     import org.springframework.security.config.annotation.web.builders.HttpSecurity;
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
     import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
     import org.springframework.security.config.http.SessionCreationPolicy;
-    import org.springframework.security.core.userdetails.UserDetailsService;
-    import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-    import org.springframework.security.crypto.password.PasswordEncoder;
     import org.springframework.security.web.SecurityFilterChain;
     import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -22,11 +16,11 @@ package com.wilton.agendador.tarefas.Infrastructute.Security;
 
         // Instâncias de JwtUtil e UserDetailsService injetadas pelo Spring
         private final JwtUtil jwtUtil;
-        private final UserDetailsService userDetailsService;
+        private final UserDetailsServiceImpl userDetailsService;
 
         // Construtor para injeção de dependências de JwtUtil e UserDetailsService
         @Autowired
-        public SecurityConfig(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        public SecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
             this.jwtUtil = jwtUtil;
             this.userDetailsService = userDetailsService;
         }
@@ -35,7 +29,7 @@ package com.wilton.agendador.tarefas.Infrastructute.Security;
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             // Cria uma instância do JwtRequestFilter com JwtUtil e UserDetailsService
-            JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtUtil, userDetailsService);
+            JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtUtil,userDetailsService);
 
             http
                     .csrf(AbstractHttpConfigurer::disable) // Desativa proteção CSRF para APIs REST (não aplicável a APIs que não mantêm estado)
