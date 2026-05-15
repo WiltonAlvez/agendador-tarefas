@@ -1,6 +1,7 @@
 package com.wilton.agendador.tarefas.Controller;
 import com.wilton.agendador.tarefas.Business.TarefasService;
 import com.wilton.agendador.tarefas.Business.dto.TarefasDTO;
+import com.wilton.agendador.tarefas.Infrastructute.enums.StatusNotificEnun;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,5 +38,24 @@ public class TarefasController {
         List<TarefasDTO> tarefas = tarefasService.buscaTarefasPorEmail(token);
     return ResponseEntity.ok(tarefas);
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deletaTarefaPorID (@RequestParam("id")String id){
+        tarefasService.deletaTarefaPorID(id);
+        return ResponseEntity.ok().build();
+
+    }
+    @PatchMapping
+    public ResponseEntity<TarefasDTO> alteraStatusNotificacao(@RequestParam("status")StatusNotificEnun status,
+                                                              @RequestParam ("id") String id){
+        return ResponseEntity.ok(tarefasService.alteraStatus(status, id));
+    }
+    @PutMapping
+    public ResponseEntity<TarefasDTO> upadateTarefas(@RequestBody TarefasDTO dto, @RequestParam("id") String id){
+    return ResponseEntity.ok(tarefasService.updateDeTarefas(dto, id));
+
+    }
+
+
 
 }
